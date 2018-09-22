@@ -34,13 +34,6 @@ func (r *Person) CalcBoringScore(ps []*Person) (score float64) {
 	return score
 }
 
-func (r *Person) CurBoringScore() (score float64) {
-	for _, n := range r.Boring {
-		score += float64(n * n)
-	}
-	return score
-}
-
 func (r *Person) AlleviateBoringScore(n float64) {
 	for p, score := range r.Boring {
 		if newScore := score - n; newScore <= 0 {

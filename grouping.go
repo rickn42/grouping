@@ -1,14 +1,17 @@
 package grouping
 
 import (
+	"math"
 	"math/rand"
 	"sort"
 	"time"
 )
 
 func Grouping(ps []*Person, memberCount int, boringMount float64) (groups []*Group) {
+	groupCnt := int(math.Ceil(float64(len(ps)) / float64(memberCount)))
+
 	// make empty groups
-	for i := 0; i < len(ps)/memberCount; i++ {
+	for i := 0; i < groupCnt; i++ {
 		groups = append(groups, NewGroup(boringMount, memberCount))
 	}
 

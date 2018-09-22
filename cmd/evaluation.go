@@ -7,27 +7,24 @@ import (
 	"github.com/rickn42/study/group/grouping"
 )
 
-type GroupingFunc func(ps []*grouping.Person, opt grouping.Option) []*grouping.Group
+type GroupingFunc func(ps []*grouping.Person, grpOpt grouping.Option) []*grouping.Group
 
-func evaluation(personCnt int, memberCnt int, turnCnt int, groupingFunc GroupingFunc) {
-
-	var idealMetCnt = float64(turnCnt*(memberCnt-1)) / float64(personCnt-1)
-	var alleviateScore float64 = 0.0
+func evaluation(groupingFunc GroupingFunc, evalOpt EvaluationOption) {
 
 	// statistics for record meeting count each person
-	statistics := make([][]int, personCnt)
+	statistics := make([][]int, evalOpt.PersonCnt)
 	for i := range statistics {
-		statistics[i] = make([]int, personCnt)
+		statistics[i] = make([]int, evalOpt.PersonCnt)
 	}
 
-	persons := make([]*grouping.Person, personCnt)
+	persons := make([]*grouping.Person, evalOpt.PersonCnt)
 	for i := range persons {
 		persons[i] = grouping.NewPerson(i)
 	}
 
-	opt := grouping.Option{
-		MemberCnt:    memberCnt,
-		BoringAmount: idealMetCnt,
+	groupingOpt := grouping.Option{
+		MemberCnt:    evalOpt.MemberOfGroup,
+		BoringAmount: evalOpt.IdealMeetTurn(),
 	}
 
 	// repeat grouping
@@ -35,8 +32,8 @@ func evaluation(personCnt int, memberCnt int, turnCnt int, groupingFunc Grouping
 	var maxGroupScore float64
 	var cntGroupScore int
 	var sumGroupScore float64
-	for i := 0; i < turnCnt; i++ {
-		groups := groupingFunc(persons, opt)
+	for i := 0; i < evalOpt.TurnCnt; i++ {
+		groups := groupingFunc(persons, groupingOpt)
 
 		// record for statistics
 		for _, g := range groups {
@@ -54,16 +51,17 @@ func evaluation(personCnt int, memberCnt int, turnCnt int, groupingFunc Grouping
 			sumGroupScore += g.BoringScoreSum
 			cntGroupScore += 1
 		}
-		grouping.Alleviate(persons, alleviateScore)
+		grouping.Alleviate(persons, evalOpt.AlleviateAmount)
 	}
 
 	// print result statistics
 	var maxScore, minScore, sumScore, avgScore float64
+	idealMeetCnt := evalOpt.IdealMeetCnt()
 	minScore = math.MaxInt32
 	for i, metCnts := range statistics {
 		var score float64
 		for j, cnt := range metCnts {
-			if delta := idealMetCnt - float64(cnt); i != j {
+			if delta := idealMeetCnt - float64(cnt); i != j {
 				score += delta * delta
 			}
 		}
@@ -79,7 +77,7 @@ func evaluation(personCnt int, memberCnt int, turnCnt int, groupingFunc Grouping
 	}
 
 	// print result
-	fmt.Printf("grouping with person %d, member %d, generation %d, ideal met count %.1f\n", personCnt, memberCnt, turnCnt, idealMetCnt)
+	fmt.Println(evalOpt)
 	avgScore = sumScore / float64(len(statistics))
 	fmt.Printf("statistic score: min %.1f, max %.1f, avg %.1f\n", minScore, maxScore, avgScore)
 	avgGroupScore := sumGroupScore / float64(cntGroupScore)

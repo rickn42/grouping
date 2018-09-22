@@ -11,14 +11,17 @@ func main() {
 }
 
 func evaluationTest() {
-	personCnt := 50
-	groupMemberCnt := 4
-	turnCnt := 50
+	opt := EvaluationOption{
+		PersonCnt:       50,
+		MemberOfGroup:   4,
+		TurnCnt:         50,
+		AlleviateAmount: 0.0,
+	}
 
 	fmt.Println("grouping by regression")
-	evaluation(personCnt, groupMemberCnt, turnCnt, grouping.GroupingByRegression)
+	evaluation(grouping.GroupingByRegression, opt)
 
 	fmt.Println("")
 	fmt.Println("grouping by random shuffle")
-	evaluation(personCnt, groupMemberCnt, turnCnt, grouping.GroupingByRandom)
+	evaluation(grouping.GroupingByRandom, opt)
 }

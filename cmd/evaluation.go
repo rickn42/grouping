@@ -3,9 +3,13 @@ package main
 import (
 	"fmt"
 	"math"
+
+	"github.com/rickn42/study/group/grouping"
 )
 
-func evaluation(personCnt int, memberCnt int, turnCnt int) {
+type GroupingFunc func(ps []*grouping.Person, memberCount int, BoringAmount float64) []*grouping.Group
+
+func evaluation(personCnt int, memberCnt int, turnCnt int, groupingFunc GroupingFunc) {
 
 	var idealMetCnt = float64(turnCnt*(memberCnt-1)) / float64(personCnt-1)
 	var alleviateScore float64 = 0.0
@@ -16,9 +20,9 @@ func evaluation(personCnt int, memberCnt int, turnCnt int) {
 		statistics[i] = make([]int, personCnt)
 	}
 
-	persons := make([]*Person, personCnt)
+	persons := make([]*grouping.Person, personCnt)
 	for i := range persons {
-		persons[i] = NewPerson(i)
+		persons[i] = grouping.NewPerson(i)
 	}
 
 	// repeat grouping
@@ -27,7 +31,7 @@ func evaluation(personCnt int, memberCnt int, turnCnt int) {
 	var cntGroupScore int
 	var sumGroupScore float64
 	for i := 0; i < turnCnt; i++ {
-		groups := Grouping(persons, memberCnt, idealMetCnt)
+		groups := groupingFunc(persons, memberCnt, idealMetCnt)
 
 		// record for statistics
 		for _, g := range groups {
@@ -45,7 +49,7 @@ func evaluation(personCnt int, memberCnt int, turnCnt int) {
 			sumGroupScore += g.BoringScoreSum
 			cntGroupScore += 1
 		}
-		AlleviateBoringScore(persons, alleviateScore)
+		grouping.AlleviateBoringScore(persons, alleviateScore)
 	}
 
 	// print result statistics

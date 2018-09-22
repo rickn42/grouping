@@ -1,6 +1,8 @@
 # grouping
 
-result
+## result
+
+#### case alleviate amount = 1.0
 ```
 repeat grouping...
 person(0) score 92
@@ -41,3 +43,29 @@ group boring score: max 152.1, avg 9.6
 ```
 
 ... not good. need improvement.
+
+#### case alleviate amount = 0.0
+```
+...
+person(48) score 27
+[41 41 41 41 40 41 42 39 41 41 41 42 41 41 41 41 40 41 41 40 41 41 41 40 41 42 39 42 42 40 41 41 40 41 42 40 41 41 40 41 40 40 40 40 41 42 40 41 0 42]
+person(49) score 27
+[42 41 41 40 40 42 41 41 41 40 41 40 42 40 41 39 41 41 40 42 41 41 41 41 41 41 41 39 40 41 40 41 41 40 42 41 41 41 41 41 40 41 41 42 42 40 40 40 42 0]
+grouping with person 50, member 5, generation 500, ideal met count 40.8
+statistic score: min 15.3, max 41.3, avg 25.3
+group boring score: max 27205331.1, avg 8922814.2
+```
+
+```
+person(48) score 26
+[5 4 5 4 4 5 4 4 4 4 5 5 4 3 4 3 3 5 4 4 4 4 4 4 3 5 4 3 3 4 5 5 4 5 3 5 2 5 4 4 4 5 4 3 4 4 4 5 0 4]
+person(49) score 22
+[3 5 4 4 4 3 5 3 4 4 5 4 4 4 4 5 5 4 4 4 3 4 4 4 4 4 4 5 4 5 3 5 4 4 4 4 6 3 5 4 4 3 5 3 4 4 4 4 4 0]
+grouping with person 50, member 5, generation 50, ideal met count 4.1
+statistic score: min 13.7, max 37.7, avg 21.8
+group boring score: max 2465.6, avg 678.3
+```
+
+-_-??? better uniform distribution...
+
+but, how about boring(continuous meeting) score?

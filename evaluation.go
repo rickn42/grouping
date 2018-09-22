@@ -8,7 +8,7 @@ import (
 func evaluation(personCnt int, memberCnt int, turnCnt int) {
 
 	var idealMetCnt = float64(turnCnt*(memberCnt-1)) / float64(personCnt-1)
-	var alleviateScore = 1.5
+	var alleviateScore float64 = 0.0
 
 	// statistics for record meeting count each person
 	statistics := make([][]int, personCnt)

@@ -8,11 +8,12 @@ import (
 type Group struct {
 	ScorePerMet    int
 	BoringScoreSum int
+	MemberLimt     int
 	Members        []*Person
 }
 
-func NewGroup(scorePerMet int) *Group {
-	return &Group{ScorePerMet: scorePerMet}
+func NewGroup(scorePerMet int, memberLimit int) *Group {
+	return &Group{ScorePerMet: scorePerMet, MemberLimt: memberLimit}
 }
 
 func (g *Group) String() string {
@@ -23,11 +24,14 @@ func (g *Group) String() string {
 	return fmt.Sprintf("%v(%02d)", g.Members, g.BoringScoreSum)
 }
 
-func (g *Group) IsFull(limit int) bool {
-	return len(g.Members) >= limit
+func (g *Group) IsFull() bool {
+	return len(g.Members) >= g.MemberLimt
 }
 
 func (g *Group) AddMember(p *Person) {
+	if g.IsFull() {
+		panic("member is full!")
+	}
 	g.BoringScoreSum += p.CalcBoringScore(g.Members)
 	for _, member := range g.Members {
 		member.AddScore(p, g.ScorePerMet)

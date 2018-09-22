@@ -7,6 +7,6 @@ func main() {
 func evaluationTest() {
 	personCnt := 50
 	groupMemberCnt := 5
-	turnCnt := 30
+	turnCnt := 90
 	evaluation(personCnt, groupMemberCnt, turnCnt)
 }

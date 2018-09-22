@@ -26,7 +26,7 @@ func evaluation(personCnt int, memberCnt int, turnCnt int, groupingFunc Grouping
 	}
 
 	// repeat grouping
-	fmt.Println("repeat grouping...")
+	//fmt.Println("repeat grouping...")
 	var maxGroupScore float64
 	var cntGroupScore int
 	var sumGroupScore float64

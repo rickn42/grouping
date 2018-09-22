@@ -3,6 +3,7 @@ package main
 import (
 	"math/rand"
 	"sort"
+	"time"
 )
 
 func Grouping(ps []*Person, memberCount int, boringMount float64) (groups []*Group) {
@@ -11,6 +12,7 @@ func Grouping(ps []*Person, memberCount int, boringMount float64) (groups []*Gro
 		groups = append(groups, NewGroup(boringMount, memberCount))
 	}
 
+	rand.Seed(time.Now().UTC().UnixNano())
 	rand.Shuffle(len(ps), func(i, j int) {
 		ps[i], ps[j] = ps[j], ps[i]
 	})

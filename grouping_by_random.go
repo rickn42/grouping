@@ -6,10 +6,10 @@ import (
 	"time"
 )
 
-func GroupingByRandom(ps []*Person, memberCnt int, boringAmount float64) []*Group {
-	groups := make([]*Group, int(math.Ceil(float64(len(ps))/float64(memberCnt))))
+func GroupingByRandom(ps []*Person, opt Option) []*Group {
+	groups := make([]*Group, int(math.Ceil(float64(len(ps))/float64(opt.MemberCnt))))
 	for i := range groups {
-		groups[i] = NewGroup(boringAmount, memberCnt)
+		groups[i] = NewGroup(opt.BoringAmount, opt.MemberCnt)
 	}
 
 	rand.Seed(time.Now().UTC().UnixNano())

@@ -7,7 +7,7 @@ import (
 	"github.com/rickn42/study/group/grouping"
 )
 
-type GroupingFunc func(ps []*grouping.Person, memberCount int, BoringAmount float64) []*grouping.Group
+type GroupingFunc func(ps []*grouping.Person, opt grouping.Option) []*grouping.Group
 
 func evaluation(personCnt int, memberCnt int, turnCnt int, groupingFunc GroupingFunc) {
 
@@ -25,13 +25,18 @@ func evaluation(personCnt int, memberCnt int, turnCnt int, groupingFunc Grouping
 		persons[i] = grouping.NewPerson(i)
 	}
 
+	opt := grouping.Option{
+		MemberCnt:    memberCnt,
+		BoringAmount: idealMetCnt,
+	}
+
 	// repeat grouping
 	//fmt.Println("repeat grouping...")
 	var maxGroupScore float64
 	var cntGroupScore int
 	var sumGroupScore float64
 	for i := 0; i < turnCnt; i++ {
-		groups := groupingFunc(persons, memberCnt, idealMetCnt)
+		groups := groupingFunc(persons, opt)
 
 		// record for statistics
 		for _, g := range groups {
@@ -49,7 +54,7 @@ func evaluation(personCnt int, memberCnt int, turnCnt int, groupingFunc Grouping
 			sumGroupScore += g.BoringScoreSum
 			cntGroupScore += 1
 		}
-		grouping.AlleviateBoringScore(persons, alleviateScore)
+		grouping.Alleviate(persons, alleviateScore)
 	}
 
 	// print result statistics

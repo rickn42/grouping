@@ -7,12 +7,12 @@ import (
 	"time"
 )
 
-func GroupingByRegression(ps []*Person, memberCount int, boringMount float64) (groups []*Group) {
-	groupCnt := int(math.Ceil(float64(len(ps)) / float64(memberCount)))
+func GroupingByRegression(ps []*Person, opt Option) (groups []*Group) {
+	groupCnt := int(math.Ceil(float64(len(ps)) / float64(opt.MemberCnt)))
 
 	// make empty groups
 	for i := 0; i < groupCnt; i++ {
-		groups = append(groups, NewGroup(boringMount, memberCount))
+		groups = append(groups, NewGroup(opt.BoringAmount, opt.MemberCnt))
 	}
 
 	rand.Seed(time.Now().UTC().UnixNano())

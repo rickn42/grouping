@@ -5,13 +5,10 @@ import (
 	"math"
 )
 
-func evaluation(personCnt int, memberCnt int) {
+func evaluation(personCnt int, memberCnt int, turnCnt int) {
 
-	generationCnt := personCnt * 10
-	idealMetCnt := (generationCnt * (memberCnt - 1)) / (personCnt - 1)
-	alleviateScore := 2
-
-	fmt.Printf("grouping with person %d, member %d, generation %d, ideal met count %d\n", personCnt, memberCnt, generationCnt, idealMetCnt)
+	var idealMetCnt = float64(turnCnt*(memberCnt-1)) / float64(personCnt-1)
+	var alleviateScore = 1.5
 
 	// statistics for record meeting count each person
 	statistics := make([][]int, personCnt)
@@ -26,7 +23,10 @@ func evaluation(personCnt int, memberCnt int) {
 
 	// repeat grouping
 	fmt.Println("repeat grouping...")
-	for i := 0; i < generationCnt; i++ {
+	var maxGroupScore float64
+	var cntGroupScore int
+	var sumGroupScore float64
+	for i := 0; i < turnCnt; i++ {
 		groups := Grouping(persons, memberCnt, idealMetCnt)
 
 		// record for statistics
@@ -38,21 +38,27 @@ func evaluation(personCnt int, memberCnt int) {
 					}
 				}
 			}
+
+			if g.BoringScoreSum > maxGroupScore {
+				maxGroupScore = g.BoringScoreSum
+			}
+			sumGroupScore += g.BoringScoreSum
+			cntGroupScore += 1
 		}
 		AlleviateBoringScore(persons, alleviateScore)
 	}
 
 	// print result statistics
-	var maxScore, minScore, sumScore, avgScore int
+	var maxScore, minScore, sumScore, avgScore float64
 	minScore = math.MaxInt32
 	for i, metCnts := range statistics {
-		var score int
+		var score float64
 		for j, cnt := range metCnts {
-			if delta := idealMetCnt - cnt; i != j {
+			if delta := idealMetCnt - float64(cnt); i != j {
 				score += delta * delta
 			}
 		}
-		fmt.Printf("person(%d) score %d\n%v\n", i, score, metCnts)
+		fmt.Printf("person(%d) score %1.f\n%v\n", i, score, metCnts)
 
 		if score > maxScore {
 			maxScore = score
@@ -62,6 +68,11 @@ func evaluation(personCnt int, memberCnt int) {
 		}
 		sumScore += score
 	}
-	avgScore = sumScore / len(statistics)
-	fmt.Printf("score: min %d, max %d, avg %d\n", minScore, maxScore, avgScore)
+
+	// print result
+	fmt.Printf("grouping with person %d, member %d, generation %d, ideal met count %.1f\n", personCnt, memberCnt, turnCnt, idealMetCnt)
+	avgScore = sumScore / float64(len(statistics))
+	fmt.Printf("statistic score: min %.1f, max %.1f, avg %.1f\n", minScore, maxScore, avgScore)
+	avgGroupScore := sumGroupScore / float64(cntGroupScore)
+	fmt.Printf("group boring score: max %.1f, avg %.1f", maxGroupScore, avgGroupScore)
 }

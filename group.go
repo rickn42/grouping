@@ -6,13 +6,13 @@ import (
 )
 
 type Group struct {
-	ScorePerMet    int
-	BoringScoreSum int
+	ScorePerMet    float64
+	BoringScoreSum float64
 	MemberLimt     int
 	Members        []*Person
 }
 
-func NewGroup(scorePerMet int, memberLimit int) *Group {
+func NewGroup(scorePerMet float64, memberLimit int) *Group {
 	return &Group{ScorePerMet: scorePerMet, MemberLimt: memberLimit}
 }
 

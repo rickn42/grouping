@@ -5,7 +5,7 @@ import (
 	"sort"
 )
 
-func Grouping(ps []*Person, memberCount int, boringMount int) (groups []*Group) {
+func Grouping(ps []*Person, memberCount int, boringMount float64) (groups []*Group) {
 	// make empty groups
 	for i := 0; i < len(ps)/memberCount; i++ {
 		groups = append(groups, NewGroup(boringMount, memberCount))
@@ -41,7 +41,7 @@ func Grouping(ps []*Person, memberCount int, boringMount int) (groups []*Group) 
 	return groups
 }
 
-func AlleviateBoringScore(ps []*Person, alleviateScore int) {
+func AlleviateBoringScore(ps []*Person, alleviateScore float64) {
 	for _, p := range ps {
 		p.AlleviateBoringScore(alleviateScore)
 	}

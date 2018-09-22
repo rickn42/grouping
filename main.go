@@ -1,7 +1,12 @@
 package main
 
 func main() {
-	personCnt := 100
+	evaluationTest()
+}
+
+func evaluationTest() {
+	personCnt := 50
 	groupMemberCnt := 5
-	evaluation(personCnt, groupMemberCnt)
+	turnCnt := 30
+	evaluation(personCnt, groupMemberCnt, turnCnt)
 }

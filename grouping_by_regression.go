@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func Grouping(ps []*Person, memberCount int, boringMount float64) (groups []*Group) {
+func GroupingByRegression(ps []*Person, memberCount int, boringMount float64) (groups []*Group) {
 	groupCnt := int(math.Ceil(float64(len(ps)) / float64(memberCount)))
 
 	// make empty groups
@@ -44,10 +44,4 @@ func Grouping(ps []*Person, memberCount int, boringMount float64) (groups []*Gro
 	}
 
 	return groups
-}
-
-func AlleviateBoringScore(ps []*Person, alleviateScore float64) {
-	for _, p := range ps {
-		p.AlleviateBoringScore(alleviateScore)
-	}
 }

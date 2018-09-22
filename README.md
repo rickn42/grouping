@@ -69,3 +69,31 @@ group boring score: max 2465.6, avg 678.3
 -_-??? better uniform distribution...
 
 but, how about boring(continuous meeting) score?
+
+### compare with random shuffle grouping
+
+by random shuffle only
+```
+...
+person(48) score 113
+[4 4 2 6 4 4 3 4 2 1 1 5 3 1 4 4 1 2 4 3 3 3 3 3 6 3 2 1 5 4 2 4 2 3 5 3 1 0 5 7 2 1 2 5 3 2 2 2 0 2]
+person(49) score 130
+[2 3 3 2 3 3 2 5 4 0 4 3 3 2 4 3 3 3 2 2 2 3 4 4 3 1 5 4 2 4 6 2 1 1 1 1 3 10 2 4 1 4 3 1 2 2 3 5 2 0]
+grouping with person 50, member 4, generation 50, ideal met count 3.1
+statistic score: min 83.1, max 204.0, avg 139.7
+group boring score: max 1864.8, avg 222.6
+```
+
+by regression (boring score) 
+```
+...
+person(48) score 19
+[3 3 3 3 3 2 2 4 2 3 3 3 4 2 4 4 3 3 3 3 2 2 3 3 3 3 2 3 3 3 3 2 4 3 3 3 3 2 4 3 3 3 3 2 4 3 3 2 0 3]
+person(49) score 19
+[3 3 2 3 4 3 2 2 3 3 3 3 3 3 4 3 4 4 3 3 2 3 2 3 3 2 2 2 3 3 3 3 2 3 2 3 3 4 4 3 3 3 2 3 3 4 3 3 3 0]
+grouping with person 50, member 4, generation 50, ideal met count 3.1
+statistic score: min 10.2, max 21.1, avg 15.2
+group boring score: max 459.2, avg 94.3
+```
+
+It's better than random shuffle!

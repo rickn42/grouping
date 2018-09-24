@@ -32,7 +32,7 @@ meet count [4 4 4 4 3 3 3 4 4 3 4 4 3 3 3 5 4 4 4 4 3 3 4 4 4 4 4 3 3 3 3 3 4 3 
 
 grouping with person 50, member of per group 3, total turn 90, ideal meet turn 24.5, ideal meet count 3.7
 
-* statistics score
+* meet score
 min 11.5, max 20.2, avg 13.9
 
 * group boring cost

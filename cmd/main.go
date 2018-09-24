@@ -12,11 +12,12 @@ func main() {
 
 func evaluationTest() {
 	opt := EvaluationOption{
-		PersonCnt:       50,
-		MemberOfGroup:   3,
-		TurnCnt:         90,
+		PersonCnt:       40,
+		MemberOfGroup:   4,
+		TurnCnt:         60,
 		AlleviateAmount: 0.0,
 		Verbose: 		 true,
+		ShowTurn: 		 true,
 	}
 
 	fmt.Println("--- grouping by random shuffle ---")

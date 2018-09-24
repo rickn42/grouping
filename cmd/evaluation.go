@@ -36,15 +36,19 @@ func evaluation(groupingFunc GroupingFunc, evalOpt EvaluationOption) {
 	var maxGroupScore float64
 	var cntGroupScore int
 	var sumGroupScore float64
-	for i := 0; i < evalOpt.TurnCnt; i++ {
+	for turnNum := 0; turnNum < evalOpt.TurnCnt; turnNum++ {
 		groups := groupingFunc(persons, groupingOpt)
+
+		if evalOpt.ShowTurn {
+			fmt.Printf("turn %03d: %v\n", turnNum, groups)
+		}
 
 		// record for statistics
 		for _, g := range groups {
 			for _, m := range g.Members {
 				for _, m2 := range g.Members {
 					if m.Id != m2.Id {
-						statistics[m.Id][m2.Id] = append(statistics[m.Id][m2.Id], i)
+						statistics[m.Id][m2.Id] = append(statistics[m.Id][m2.Id], turnNum)
 					}
 				}
 			}

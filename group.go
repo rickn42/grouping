@@ -21,7 +21,7 @@ func (g *Group) String() string {
 		return g.Members[i].Id < g.Members[j].Id
 	})
 
-	return fmt.Sprintf("%v(%.2f)", g.Members, g.BoringScoreSum)
+	return fmt.Sprintf("%v", g.Members)
 }
 
 func (g *Group) IsFull() bool {

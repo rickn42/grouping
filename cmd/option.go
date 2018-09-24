@@ -8,6 +8,7 @@ type EvaluationOption struct {
 	TurnCnt         int
 	AlleviateAmount float64
 	Verbose 		bool
+	ShowTurn        bool
 }
 
 func (opt EvaluationOption) String() string {

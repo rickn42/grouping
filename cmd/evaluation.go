@@ -11,14 +11,14 @@ type GroupingFunc func(ps []*grouping.Person, grpOpt grouping.Option) []*groupin
 
 func evaluation(groupingFunc GroupingFunc, evalOpt EvaluationOption) {
 
-	// statistics for record meeting each other.
+	// meetCounter for record meeting each other.
 	// First index is a person number.
 	// Second index is a person who met.
 	// Third index is turn numbers of meeting.
-	// ex) statistics[i][j] = [1,4,8,12] means that person(i) met person(j) 4 times (turn number 1, 4, 8, 12)
-	statistics := make([][][]int, evalOpt.PersonCnt)
-	for i := range statistics {
-		statistics[i] = make([][]int, evalOpt.PersonCnt)
+	// ex) meetCounter[i][j] = [1,4,8,12] means that person(i) met person(j) 4 times (turn number 1, 4, 8, 12)
+	meetCounter := make([][][]int, evalOpt.PersonCnt)
+	for i := range meetCounter {
+		meetCounter[i] = make([][]int, evalOpt.PersonCnt)
 	}
 
 	persons := make([]*grouping.Person, evalOpt.PersonCnt)
@@ -32,7 +32,7 @@ func evaluation(groupingFunc GroupingFunc, evalOpt EvaluationOption) {
 	}
 
 	// repeat grouping
-	//fmt.Println("repeat grouping...")
+	if evalOpt.ShowTurn { fmt.Println("repeat grouping...") }
 	var maxGroupScore float64
 	var cntGroupScore int
 	var sumGroupScore float64
@@ -43,12 +43,12 @@ func evaluation(groupingFunc GroupingFunc, evalOpt EvaluationOption) {
 			fmt.Printf("turn %03d: %v\n", turnNum, groups)
 		}
 
-		// record for statistics
+		// record for meetCounter
 		for _, g := range groups {
 			for _, m := range g.Members {
 				for _, m2 := range g.Members {
 					if m.Id != m2.Id {
-						statistics[m.Id][m2.Id] = append(statistics[m.Id][m2.Id], turnNum)
+						meetCounter[m.Id][m2.Id] = append(meetCounter[m.Id][m2.Id], turnNum)
 					}
 				}
 			}
@@ -68,27 +68,33 @@ func evaluation(groupingFunc GroupingFunc, evalOpt EvaluationOption) {
 	idealMeetTurn := evalOpt.IdealMeetTurn()
 	idealMeetCnt := evalOpt.IdealMeetCnt()
 	minScore = math.MaxInt32
-	for i, j := range statistics {
+	for me, other := range meetCounter {
+
 		var score float64
-		for j, turns := range j {
-			if delta := idealMeetCnt - float64(len(turns)); i != j {
+		for i, turns := range other {
+			// update meet count score
+			if delta := idealMeetCnt - float64(len(turns)); me != i {
 				score += delta * delta
 			}
+			// update meet interval score
 			for idx, turn := range turns {
 				if idx != 0 {
 					d := idealMeetTurn - float64(turn - turns[idx-1])
-					turnIntervalCost[i] += d * d
+					turnIntervalCost[me] += d * d
 				}
 			}
 		}
+
+		// print meet count
 		meetCnt := make([]int, evalOpt.PersonCnt)
-		for who, turns := range j {
+		for who, turns := range other {
 			meetCnt[who] = len(turns)
 		}
 		if evalOpt.Verbose {
-			fmt.Printf("person(%d) score %1.f\nmeet count %v\n", i, score, meetCnt)
+			fmt.Printf("person(%d) score %1.f\nmeet count %v\n", me, score, meetCnt)
 		}
 
+		// update min, max score
 		if score > maxScore {
 			maxScore = score
 		}
@@ -101,19 +107,19 @@ func evaluation(groupingFunc GroupingFunc, evalOpt EvaluationOption) {
 	// print result
 	fmt.Println()
 	fmt.Println(evalOpt)
-	avgScore = sumScore / float64(len(statistics))
+	avgScore = sumScore / float64(len(meetCounter))
 
 	fmt.Println()
-	fmt.Println("* statistics score")
+	fmt.Println("* difference score between ideal and result meet count")
 	fmt.Printf("min %.1f, max %.1f, avg %.1f\n", minScore, maxScore, avgScore)
 
-	fmt.Println()
-	avgGroupScore := sumGroupScore / float64(cntGroupScore)
-	fmt.Println("* group boring cost")
-	fmt.Printf("max %.1f, avg %.1f\n", maxGroupScore, avgGroupScore)
+	//fmt.Println()
+	//avgGroupScore := sumGroupScore / float64(cntGroupScore)
+	//fmt.Println("* group boring cost")
+	//fmt.Printf("max %.1f, avg %.1f\n", maxGroupScore, avgGroupScore)
 
 	fmt.Println()
-	fmt.Println("* meet turn interval cost")
+	fmt.Println("* difference score between ideal and result meet interval")
 	var minTurnCost, maxTurnCost, sumTurnCost float64
 	minTurnCost = math.MaxInt32
 	if evalOpt.Verbose {

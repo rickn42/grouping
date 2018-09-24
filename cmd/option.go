@@ -12,7 +12,7 @@ type EvaluationOption struct {
 }
 
 func (opt EvaluationOption) String() string {
-	return fmt.Sprintf("grouping with person %d, member of per group %d, total turn %d, ideal meet turn %.1f, ideal meet count %.1f",
+	return fmt.Sprintf("grouping with person %d, member of per group %d, total turn %d (ideal meet turn %.1f, ideal meet count %.1f)",
 		opt.PersonCnt, opt.MemberOfGroup, opt.TurnCnt, opt.IdealMeetTurn(), opt.IdealMeetCnt())
 }
 

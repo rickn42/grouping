@@ -95,19 +95,30 @@ func evaluation(groupingFunc GroupingFunc, evalOpt EvaluationOption) {
 	}
 
 	// print result
+	fmt.Println()
 	fmt.Println(evalOpt)
 	avgScore = sumScore / float64(len(statistics))
+
+	fmt.Println()
 	fmt.Println("* statistics score")
 	fmt.Printf("min %.1f, max %.1f, avg %.1f\n", minScore, maxScore, avgScore)
+
+	fmt.Println()
 	avgGroupScore := sumGroupScore / float64(cntGroupScore)
 	fmt.Println("* group boring cost")
 	fmt.Printf("max %.1f, avg %.1f\n", maxGroupScore, avgGroupScore)
 
+	fmt.Println()
 	fmt.Println("* meet turn interval cost")
 	var minTurnCost, maxTurnCost, sumTurnCost float64
 	minTurnCost = math.MaxInt32
+	if evalOpt.Verbose {
+		fmt.Print("[")
+	}
 	for _, cost := range turnIntervalCost {
-		//fmt.Printf("person(%d) %01.f\n", i, cost)
+		if evalOpt.Verbose {
+			fmt.Printf("%01.f, ",cost)
+		}
 		if cost < minTurnCost {
 			minTurnCost = cost
 		}
@@ -115,6 +126,9 @@ func evaluation(groupingFunc GroupingFunc, evalOpt EvaluationOption) {
 			maxTurnCost = cost
 		}
 		sumTurnCost += cost
+	}
+	if evalOpt.Verbose {
+		fmt.Println("]")
 	}
 	fmt.Printf("min %.1f max %.1f avg %1.f\n", minTurnCost, maxTurnCost, sumTurnCost/float64(len(turnIntervalCost)))
 }

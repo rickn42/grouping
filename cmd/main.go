@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/rickn42/study/group/grouping"
+	"github.com/rickn42/grouping"
 )
 
 func main() {

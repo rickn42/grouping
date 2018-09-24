@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/rickn42/study/group/grouping"
+	"github.com/rickn42/grouping"
 )
 
 type GroupingFunc func(ps []*grouping.Person, grpOpt grouping.Option) []*grouping.Group

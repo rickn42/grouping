@@ -7,11 +7,12 @@ type EvaluationOption struct {
 	MemberOfGroup   int
 	TurnCnt         int
 	AlleviateAmount float64
+	Verbose 		bool
 }
 
 func (opt EvaluationOption) String() string {
-	return fmt.Sprintf("grouping with person %d, %d member of a group, turn %d, ideal meet count %.1f",
-		opt.PersonCnt, opt.MemberOfGroup, opt.TurnCnt, opt.IdealMeetCnt())
+	return fmt.Sprintf("grouping with person %d, member of per group %d, total turn %d, ideal meet turn %.1f, ideal meet count %.1f",
+		opt.PersonCnt, opt.MemberOfGroup, opt.TurnCnt, opt.IdealMeetTurn(), opt.IdealMeetCnt())
 }
 
 func (opt EvaluationOption) IdealMeetCnt() float64 {
